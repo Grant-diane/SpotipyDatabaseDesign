@@ -10,7 +10,8 @@ listeners = Blueprint('listeners', __name__)
 def getTopSong(username):
     cursor = db.get_db().cursor()
     cursor.execute('select trackName from Listened_songs where timePlayed='
-                   '(select MAX(timePlayed) from Listened_songs where ListenerID = {0}'.format(username))
+                   '(select MAX(timePlayed) from Listened_songs where ListenerID = {0}) '
+                   'and ListenerID = {0}}'.format(username))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
