@@ -27,7 +27,8 @@ def getTopSong(username):
 def getTopPlaylist(username):
     cursor = db.get_db().cursor()
     cursor.execute('select playlistName from Playlist where playlistID = (select playlistID'
-                   ' from playlist_Maker where (select MAX(timePlayed) from Listened_songs where ListenerID = {0})'.format(username))
+                   ' from playlist_Maker where minutesPlayed = (select MAX(minutesPlayed) '
+                   'from Playlist_Maker where ListenerID = {0})'.format(username))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
