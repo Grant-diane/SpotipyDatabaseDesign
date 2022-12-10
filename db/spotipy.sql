@@ -66,7 +66,7 @@ CREATE TABLE Songs(
     songID       varchar(255) PRIMARY KEY,
     trackURL     varchar(255),
     msPlayed     int,
-    tackName     varChar(255),
+    trackName    varChar(255),
     length       int,
     genreID      varchar(255),
     performerID  varchar(255),
@@ -112,6 +112,7 @@ CREATE TABLE Listened_songs(
     listenedSongsID varchar(255),
     listenerID      varchar(255),
     songID          varchar(255),
+    timePlayed varchar(255),
     FOREIGN KEY (listenerID) REFERENCES Listener (username) ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY (songID) REFERENCES Songs (songID) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
@@ -236,11 +237,11 @@ INSERT INTO Works_with VALUES (4, 4, 5, 'DoorPost');
 INSERT INTO Works_with VALUES (5, 5, 4, 'WindowFrame');
 
 
-insert into Listened_songs values (1, 1, 1);
-insert into Listened_songs values (2, 2, 2);
-insert into Listened_songs values (3, 3, 3);
-insert into Listened_songs values (4, 4, 4);
-insert into Listened_songs values (5, 5, 5);
+insert into Listened_songs values (1, 1, 1, 20);
+insert into Listened_songs values (2, 2, 2, 66);
+insert into Listened_songs values (3, 3, 3, 5);
+insert into Listened_songs values (4, 4, 4, 95);
+insert into Listened_songs values (5, 5, 5, 209);
 
 
 insert into Podcast_Listener values (1, 3456, 1, 1);
