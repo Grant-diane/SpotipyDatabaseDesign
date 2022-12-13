@@ -29,6 +29,7 @@ def create_app():
     from src.customers.customers import customers
     from src.products.products  import products
     from src.listeners.listeners import listeners
+    ###
 
     # Register the routes that we just imported so they can be properly handled
     app.register_blueprint(views,       url_prefix='/classic')

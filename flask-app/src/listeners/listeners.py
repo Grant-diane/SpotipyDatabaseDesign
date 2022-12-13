@@ -4,14 +4,16 @@ from src import db
 
 listeners = Blueprint('listeners', __name__)
 
-
 # Gets the NAME of the top song of the listener
-@listeners.route('/listeners/topSong/<username>', methods=['GET'])
+@listeners.route('/topSong/<username>', methods=['GET'])
 def getTopSong(username):
     cursor = db.get_db().cursor()
-    cursor.execute('select trackName from Listened_songs where timePlayed='
-                   '(select MAX(timePlayed) from Listened_songs where ListenerID = {0}) '
-                   'and ListenerID = {0}'.format(username))
+
+    query = '''select trackName from Songs where songID = (select songID from Listened_songs 
+    where ListenerID = {0} AND timePlayed=
+                   (select MAX(timePlayed) from Listened_songs where ListenerID = {0}))'''
+
+    cursor.execute(query.format(username))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -21,15 +23,15 @@ def getTopSong(username):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
 
 # Get the most played playlist for listener with particular ListenerID
-@listeners.route('/listeners/topPlaylist/<userID>', methods=['GET'])
+@listeners.route('/topPlaylist/<username>', methods=['GET'])
 def getTopPlaylist(username):
     cursor = db.get_db().cursor()
-    cursor.execute('select playlistName from Playlist where playlistID = (select playlistID'
-                   ' from playlist_Maker where minutesPlayed = (select MAX(minutesPlayed) '
-                   'from Playlist_Maker where ListenerID = {0})'.format(username))
+
+    q = '''select playlistName from Playlist where playlistID = (select playlistId
+    from Playlist_Maker where listenerID = {0} AND minutesPlayed = (select max(minutesPlayed) from Playlist_Maker))'''
+    cursor.execute(q.format(username))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -39,3 +41,19 @@ def getTopPlaylist(username):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+@listeners.route('/listeners/newGenre',methods=['POST'])
+def insertGenre():
+    cursor = db.get_db().cursor()
+    genre_ID = request.form['genreID']
+    genreName = request.form['genreName']
+    cursor.execute(f'INSERT INTO Genre (genreID, genreName) VALUES ({genre_ID, genreName})')
+    return cursor.connection.commit()
+
+@listeners.route('/listeners/addUser', methods=['POST'])
+def addUsername():
+    cursor = db.get_db().cursor()
+    username_ID = request.form['username']
+    email_ID = request.form['email']
+    cursor.execute(f'INSERT INTO VisitedUsers (username, email, visits) VALUES ({username_ID, email_ID, 1})')
+    return cursor.connection.commit()
