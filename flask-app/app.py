@@ -9,16 +9,6 @@ from src import create_app
 # create the app object
 app = create_app()
 
-# imports blueprints
-
-from src import listeners
-
-app.register_blueprint(listeners, url_prefix='/list')
-
-@app.route("/")
-def hello_world():
-    return f'<h1>Hello welcome to SPOTIPY</h1>'
-
 if __name__ == '__main__':
     # we want to run in debug mode (for hot reloading) 
     # this app will be bound to port 4000. 

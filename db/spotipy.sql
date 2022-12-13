@@ -1,11 +1,7 @@
-CREATE DATABASE spotipy;
+USE spotipy;
 
-CREATE
-USER 'webapp'@'%' IDENTIFIED BY 'abc123';
 GRANT ALL PRIVILEGES ON spotipy.* TO 'webapp'@'%';
 FLUSH PRIVILEGES;
-
-USE spotipy;
 
 CREATE TABLE Listener(
     username         varchar(255) PRIMARY KEY,
