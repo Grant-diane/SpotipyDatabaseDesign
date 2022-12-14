@@ -19,6 +19,9 @@ After this the ngrok link is provided and we put it in AppSmith as our API Datas
 Then when we write and insert our queries into AppSmith we use the just created API as our Datasource. 
 Finally we can run what we have configured and developed over AppSmith and deploy our project to view how each of our queries are implemented and displayed in the final user interface.
 
+## Video of Final Product
+https://drive.google.com/file/d/1x6HvtM8nrqQmrgKMQx_pa34GXV0Go5c2/view?usp=sharing
+
 ## MySQL + Flask Boilerplate Project
 
 This repo contains a boilerplate setup for spinning up 2 docker containers: 
