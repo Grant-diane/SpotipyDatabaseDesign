@@ -2,17 +2,16 @@ from flask import Blueprint, request, jsonify, make_response
 import json
 from src import db
 
-producers = Blueprint('producers', __name__)
+artists = Blueprint('artists', __name__)
 
-# Gets the number of songs a particular producer has made
-@producers.route('/producer/numOfSongs/<ProducerID>', methods=['GET'])
-def getNumOfSongs(ProducerID):
+# Returns the number of listeners a particular artists has
+@artists.route('/numOfListeners/<artistID>', methods=['GET'])
+def getNumOfListeners(artistID):
     cursor = db.get_db().cursor()
 
-    query = '''select numOfSongs from Producer 
-    where producerID = {0} '''
+    query = '''select count(*) from Listens_to where ArtistID = {0} '''
 
-    cursor.execute(query.format(ProducerID))
+    cursor.execute(query.format(artistID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -23,15 +22,16 @@ def getNumOfSongs(ProducerID):
     the_response.mimetype = 'application/json'
     return the_response
 
-# Returns the number of artists a producer has worked with
-@producers.route('/producer/artistsWorkedWith/<ProducerID>', methods=['GET'])
-def getNumOfArtistsWorkedWith(ProducerID):
+
+# Reutrns the top song of a particular artists
+@artists.route('/topSong/<artistID>', methods=['GET'])
+def getTopSong(artistID):
     cursor = db.get_db().cursor()
 
-    query = '''select count(*) from Works_with 
-    where producerID = {0} '''
+    query = '''select trackName from Songs where msPlayed=
+                   (select MAX(msPlayed) from Songs where performerID = {0})'''
 
-    cursor.execute(query.format(ProducerID))
+    cursor.execute(query.format(artistID))
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()
@@ -41,3 +41,8 @@ def getNumOfArtistsWorkedWith(ProducerID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+
+
+
+
