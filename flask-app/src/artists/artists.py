@@ -23,7 +23,7 @@ def getNumOfListeners(artistID):
     return the_response
 
 
-# Reutrns the top song of a particular artists
+# Returns the top song of a particular artists
 @artists.route('/topSong/<artistID>', methods=['GET'])
 def getTopSong(artistID):
     cursor = db.get_db().cursor()
