@@ -9,6 +9,10 @@ producers = Blueprint('producers', __name__)
 @producers.route('/producers/topSong/<username>', methods=['GET'])
 def getTopSongByArtist(username):
     cursor = db.get_db().cursor()
+
+    q = ''' '''
+
+
     cursor.execute('select trackName from Listened_songs JOIN Works_with where timePlayed='
                    '(select MAX(timePlayed) from Listened_songs '
                    'where ArtistID = {0} and ListenerID = {0}) '
